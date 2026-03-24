@@ -1,6 +1,6 @@
 ## 前言
 
-这个博客是纯静态架构，没有后台管理系统。所有文章以 Markdown 文件的形式存储在 GitHub 仓库中，通过 `posts.json` 索引文件统一管理。本文详细说明文章的增删改查四种操作方式。
+这个博客是纯静态架构，没有后台管理系统。所有文章以 Markdown 文件存储，项目作品以 JSON 数据存储，均通过 GitHub 仓库直接管理。本文详细说明**文章**和**项目作品**的增删改查操作方式。
 
 ---
 
@@ -11,83 +11,60 @@ luckey-ke.github.io/
 ├── index.html          # 博客首页
 ├── post.html           # 文章详情页
 ├── posts.json          # 文章索引（核心配置）
-├── posts/              # 文章目录
+├── posts/              # 文章目录（.md 文件）
 │   ├── java8-syntactic-sugar.md
 │   ├── git-cheatsheet.md
 │   └── ...
+├── projects.json       # 项目作品列表（核心配置）
 ├── style.css           # 全局样式
 ├── post.css            # 文章页样式
 ├── main.js             # 交互逻辑
 ├── physics.js          # 物理引擎
 ├── markdown.js         # Markdown 渲染器
-├── build.js            # 构建脚本
-└── projects.json       # 项目列表
+└── build.js            # 构建脚本
 ```
 
-**核心原理**：`post.html` 根据 URL 参数 `?slug=xxx` 去 `posts/` 目录找对应的 `.md` 文件，再用 `markdown.js` 渲染成 HTML。`posts.json` 负责提供文章的标题、日期、标签等元数据。
+**两套数据，两种管理方式**：
+- **文章**：`posts/xxx.md`（内容）+ `posts.json`（索引）→ 两个文件
+- **项目**：`projects.json`（全部数据）→ 一个文件
 
 ---
 
-## 查（Read）
+## 一、文章管理
 
-### 在线阅读
+### 查（Read）
 
-访问博客地址，首页的文章卡片就是从 `posts.json` 读取的。点击卡片跳转到 `post.html?slug=xxx`，页面会自动加载对应的 Markdown 文件并渲染。
+**在线阅读**：首页文章卡片从 `posts.json` 读取，点击跳转 `post.html?slug=xxx` 自动加载对应的 `.md` 文件渲染。
 
-### 本地查看源码
+**本地查看**：
 
 ```bash
-# 克隆仓库
 git clone https://github.com/luckey-ke/luckey-ke.github.io.git
 cd luckey-ke.github.io
 
-# 查看所有文章列表
-ls posts/
-
-# 查看某篇文章内容
-cat posts/java8-syntactic-sugar.md
-
-# 查看文章索引
-cat posts.json | python3 -m json.tool
+ls posts/                           # 查看所有文章
+cat posts/java8-syntactic-sugar.md  # 查看文章内容
+cat posts.json | python3 -m json.tool  # 查看文章索引
 ```
 
-### 本地预览
-
-因为是纯静态文件，用任意 HTTP 服务器即可预览：
+**本地预览**：
 
 ```bash
-# 方法一：Python
-python3 -m http.server 8080
-
-# 方法二：Node.js
-npx serve .
-
-# 方法三：VS Code 安装 Live Server 插件，右键 index.html → Open with Live Server
+python3 -m http.server 8080   # 或 npx serve .
+# 浏览器打开 http://localhost:8080
 ```
 
-浏览器打开 `http://localhost:8080` 即可看到完整博客。
+### 增（Create）
 
----
-
-## 增（Create）
-
-新增一篇文章需要两步：创建 `.md` 文件 + 更新 `posts.json`。
-
-### 第一步：创建 Markdown 文件
-
-在 `posts/` 目录下新建文件，文件名即 slug（URL 标识符）：
+**第一步：创建 Markdown 文件**
 
 ```bash
 touch posts/my-new-article.md
 ```
 
-slug 命名规范：
-- 全小写英文
-- 单词之间用 `-` 连接
-- 简短有描述性
-- 示例：`docker-guide`、`linux-perf-tuning`、`spring-boot-start`
+slug 命名规范：全小写、`-` 连接、简短有描述性。示例：`docker-guide`、`linux-perf-tuning`
 
-编写文章内容：
+编写内容：
 
 ```markdown
 ## 前言
@@ -100,12 +77,7 @@ slug 命名规范：
 
 正文内容...
 
-### 小标题
-
-更多内容...
-
 ```java
-// 代码块支持语言标识
 public class Hello {
     public static void main(String[] args) {
         System.out.println("Hello World");
@@ -129,16 +101,15 @@ public class Hello {
 | 斜体 | `*文字*` |
 | 行内代码 | `` `code` `` |
 | 代码块 | ` ```语言 ` + 内容 + ` ``` ` |
-| 无序列表 | `- 列表项` |
-| 有序列表 | `1. 列表项` |
+| 列表 | `- 列表项` / `1. 列表项` |
 | 引用 | `> 引用内容` |
 | 链接 | `[文字](URL)` |
 | 表格 | `\| 列1 \| 列2 \|` |
 | 分割线 | `---` |
 
-### 第二步：更新 posts.json
+**第二步：更新 posts.json**
 
-在 `posts.json` 数组**最前面**添加一条元数据：
+在数组最前面加一条：
 
 ```json
 {
@@ -147,7 +118,7 @@ public class Hello {
   "date": "2026-03-24",
   "tag": "分类标签",
   "tagColor": "#667eea",
-  "excerpt": "一句话描述文章内容，会显示在卡片上",
+  "excerpt": "一句话描述文章内容",
   "readTime": 5
 }
 ```
@@ -158,26 +129,25 @@ public class Hello {
 |------|------|------|
 | slug | string | 必须和文件名一致（不含 .md） |
 | title | string | 文章标题 |
-| date | string | 发布日期，格式 YYYY-MM-DD |
-| tag | string | 分类标签，如 前端、Java、工具、AI |
-| tagColor | string | 标签颜色，hex 格式，如 `#667eea` |
-| excerpt | string | 文章摘要，显示在博客卡片上 |
-| readTime | number | 预估阅读时间（分钟） |
+| date | string | 发布日期 YYYY-MM-DD |
+| tag | string | 分类标签 |
+| tagColor | string | 标签颜色 hex，如 `#667eea` |
+| excerpt | string | 文章摘要 |
+| readTime | number | 预估阅读分钟数 |
 
-**常用标签颜色参考**：
+**常用标签颜色**：
 
-| 分类 | 推荐颜色 |
-|------|----------|
-| 前端 | `#42b883`（Vue 绿）或 `#61dafb`（React 蓝） |
+| 分类 | 颜色 |
+|------|------|
+| 前端 | `#42b883`（Vue 绿） |
 | Java | `#f89820`（Java 橙） |
-| Python | `#3776ab`（Python 蓝） |
+| Python | `#3776ab` |
 | AI | `#4facfe` |
 | 工具 | `#43e97b` |
 | 设计 | `#f093fb` |
 | 运维 | `#2496ed`（Docker 蓝） |
-| 数据库 | `#336791`（PostgreSQL 蓝） |
 
-### 第三步：提交推送
+**第三步：提交推送**
 
 ```bash
 git add posts/my-new-article.md posts.json
@@ -185,155 +155,170 @@ git commit -m "Add article: my-new-article"
 git push origin main
 ```
 
-等待 1-2 分钟 GitHub Pages 自动部署完成，刷新博客即可看到新文章。
+### 改（Update）
 
----
-
-## 改（Update）
-
-### 修改文章内容
-
-直接编辑 `posts/` 下对应的 `.md` 文件：
+**修改文章内容**：
 
 ```bash
-# 编辑文章
-vim posts/my-new-article.md
-# 或用 VS Code
-code posts/my-new-article.md
-```
-
-修改完提交：
-
-```bash
+vim posts/my-new-article.md   # 或 code posts/my-new-article.md
 git add posts/my-new-article.md
 git commit -m "Update article: my-new-article"
 git push origin main
 ```
 
-### 修改文章元数据
+**修改元数据**：编辑 `posts.json` 中对应条目的字段，然后 push。
 
-如果需要改标题、标签、摘要等，编辑 `posts.json` 中对应的条目即可：
-
-```bash
-vim posts.json
-# 修改 title / tag / excerpt / readTime 等字段
-
-git add posts.json
-git commit -m "Update metadata for my-new-article"
-git push origin main
-```
-
-### 修改文章 slug（重命名）
-
-需要同时改两处：
+**修改 slug（重命名）**：
 
 ```bash
-# 1. 重命名文件
 mv posts/old-slug.md posts/new-slug.md
-
-# 2. 更新 posts.json 中的 slug 字段
-vim posts.json
-# 把 "slug": "old-slug" 改成 "slug": "new-slug"
-
+# 同步修改 posts.json 中的 slug 字段
 git add posts/old-slug.md posts/new-slug.md posts.json
 git commit -m "Rename article: old-slug → new-slug"
 git push origin main
 ```
 
-**注意**：改 slug 后旧链接会失效（404），如果文章已经被搜索引擎收录，建议保留旧 slug。
-
----
-
-## 删（Delete）
-
-### 删除文章
-
-两步操作：删除 `.md` 文件 + 从 `posts.json` 移除对应条目。
+### 删（Delete）
 
 ```bash
-# 1. 删除文件
 rm posts/my-article.md
-
-# 2. 编辑 posts.json，删除对应的 JSON 对象
-vim posts.json
-
-# 3. 提交
+# 从 posts.json 中删除对应条目
 git add posts/my-article.md posts.json
 git commit -m "Remove article: my-article"
 git push origin main
 ```
 
-### 临时下线（不删除文件）
-
-如果只是想暂时隐藏文章，不删除文件，只需从 `posts.json` 中移除对应条目。文章文件还在，但首页不会显示，直接访问 URL 也找不到（因为索引里没有了）。
+临时下线：不删 `.md` 文件，只从 `posts.json` 移除条目即可。
 
 ---
 
-## 常见问题
+## 二、项目作品管理
 
-**Q: 新文章首页不显示？**
-检查 `posts.json` 中的 slug 是否和文件名完全一致，包括大小写。
+项目作品比文章更简单——所有数据都在 `projects.json` 一个文件里，没有单独的内容文件。
 
-**Q: 文章页面显示 404？**
-确认 `posts/xxx.md` 文件存在且已推送到 GitHub。可以在 GitHub 网页端检查文件是否存在。
+### projects.json 结构
 
-**Q: Markdown 渲染异常？**
-本博客使用自研的轻量渲染器，支持的语法有限。如果表格、列表渲染不对，检查格式是否规范（如表格的分隔行 `|---|---|`）。
-
-**Q: 中文文件名可以吗？**
-可以但不推荐。slug 建议用英文，中文文件名在不同系统间可能有编码问题。
-
-**Q: 支持图片吗？**
-目前不支持文章内嵌图片。如需图片，可以上传到 `posts/images/` 目录，然后用链接引用：`![描述](posts/images/xxx.png)`。但需要确保 `markdown.js` 渲染器支持图片语法（当前版本未实现）。
-
----
-
-## 自动化建议
-
-如果文章多了，手动编辑 `posts.json` 比较麻烦，可以写一个简单的脚本自动生成索引：
-
-```bash
-#!/bin/bash
-# gen-index.sh — 自动扫描 posts/ 目录生成 posts.json
-# 使用方式: bash gen-index.sh
-
-echo "扫描 posts/ 目录..."
-files=$(ls posts/*.md 2>/dev/null | sort -r)
-
-echo "["
-first=true
-for f in $files; do
-  slug=$(basename "$f" .md)
-  if [ "$first" = true ]; then
-    first=false
-  else
-    echo ","
-  fi
-  echo "  {"
-  echo "    \"slug\": \"$slug\","
-  echo "    \"title\": \"$slug\","
-  echo "    \"date\": \"$(date +%Y-%m-%d)\","
-  echo "    \"tag\": \"未分类\","
-  echo "    \"tagColor\": \"#667eea\","
-  echo "    \"excerpt\": \"文章摘要待补充\","
-  echo "    \"readTime\": 3"
-  echo "  }"
-done
-echo ""
-echo "]"
+```json
+[
+  {
+    "icon": "🔬",
+    "title": "Physics.js",
+    "desc": "轻量级 2D 物理引擎，支持刚体碰撞、弹簧和约束求解",
+    "tags": ["JavaScript", "Canvas"],
+    "link": "https://github.com/luckey-ke"
+  }
+]
 ```
 
-运行后会输出一个基础版的 `posts.json`，再手动补充标题和摘要即可。
+**字段说明**：
+
+| 字段 | 类型 | 说明 |
+|------|------|------|
+| icon | string | 项目图标，用 emoji，如 🚀 🤖 🎨 |
+| title | string | 项目名称 |
+| desc | string | 一句话描述 |
+| tags | array | 技术标签数组，如 `["React", "Node.js"]` |
+| link | string | 项目链接，GitHub 仓库地址或在线演示地址 |
+
+### 增（Create）
+
+编辑 `projects.json`，在数组中添加一个新对象：
+
+```json
+{
+  "icon": "🐳",
+  "title": "Docker Toolkit",
+  "desc": "常用 Docker 部署模板和脚本集合",
+  "tags": ["Docker", "DevOps", "Shell"],
+  "link": "https://github.com/luckey-ke/docker-toolkit"
+}
+```
+
+```bash
+git add projects.json
+git commit -m "Add project: Docker Toolkit"
+git push origin main
+```
+
+项目会自动显示在首页「项目作品」区域。
+
+### 改（Update）
+
+直接编辑 `projects.json` 中对应项目的字段：
+
+```bash
+vim projects.json
+# 修改 title / desc / tags / link / icon
+
+git add projects.json
+git commit -m "Update project: Docker Toolkit"
+git push origin main
+```
+
+### 删（Delete）
+
+从 `projects.json` 数组中删除对应的 JSON 对象：
+
+```bash
+vim projects.json
+# 删除对应的 { ... } 整个对象
+
+git add projects.json
+git commit -m "Remove project: Docker Toolkit"
+git push origin main
+```
+
+### 查（Read）
+
+```bash
+cat projects.json | python3 -m json.tool   # 查看所有项目
+```
+
+首页滚动到「项目作品」区域即可看到卡片展示。
 
 ---
 
-## 总结
+## 三、常见问题
+
+**Q: 新文章首页不显示？**
+检查 `posts.json` 中的 slug 是否和文件名完全一致。
+
+**Q: 文章页面显示 404？**
+确认 `posts/xxx.md` 文件已推送到 GitHub，可在网页端检查。
+
+**Q: Markdown 渲染异常？**
+本博客使用轻量渲染器，语法支持有限。检查表格分隔行 `|---|---|` 是否规范。
+
+**Q: 中文文件名可以吗？**
+可以但不推荐，不同系统可能有编码问题。
+
+**Q: 项目支持图片吗？**
+目前项目卡片用 emoji 图标，不支持自定义图片。
+
+**Q: 文章和项目的显示顺序？**
+- 文章：按 `posts.json` 中的数组顺序，第一条显示在最前面
+- 项目：按 `projects.json` 中的数组顺序
+
+---
+
+## 四、操作速查
+
+### 文章
 
 | 操作 | 步骤 |
 |------|------|
-| 增 | 创建 `.md` 文件 → 更新 `posts.json` → push |
-| 改 | 编辑 `.md` 文件（内容）或 `posts.json`（元数据） → push |
-| 删 | 删除 `.md` 文件 → 从 `posts.json` 移除条目 → push |
-| 查 | 首页浏览 / `cat posts/xxx.md` / 浏览器直接访问 |
+| 增 | 创建 `.md` → 更新 `posts.json` → push |
+| 改 | 编辑 `.md`（内容）或 `posts.json`（元数据） → push |
+| 删 | 删除 `.md` → 从 `posts.json` 移除 → push |
+| 查 | 首页浏览 / `cat posts/xxx.md` |
 
-整个博客零依赖、零构建，所有操作就是**文件的增删改查 + git push**。
+### 项目
+
+| 操作 | 步骤 |
+|------|------|
+| 增 | 在 `projects.json` 加对象 → push |
+| 改 | 编辑 `projects.json` 对应字段 → push |
+| 删 | 从 `projects.json` 移除对象 → push |
+| 查 | 首页滚动到项目区域 / `cat projects.json` |
+
+整个博客零依赖、零构建，所有操作就是**编辑 JSON/Markdown 文件 + git push**。
