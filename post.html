@@ -66,13 +66,21 @@
       }
 
       // 加载文章元数据和内容
+      const mdUrl = 'posts/' + slug + '.md'
+      console.log('[post] slug:', slug, 'mdUrl:', mdUrl)
+
       Promise.all([
-        fetch('posts.json').then(r => r.json()),
-        fetch('posts/' + slug + '.md').then(r => {
-          if (!r.ok) throw new Error('文章不存在')
+        fetch('posts.json').then(r => {
+          console.log('[post] posts.json status:', r.status)
+          return r.json()
+        }),
+        fetch(mdUrl).then(r => {
+          console.log('[post] md status:', r.status, r.ok)
+          if (!r.ok) throw new Error('文章文件加载失败: ' + mdUrl + ' (HTTP ' + r.status + ')')
           return r.text()
         })
       ]).then(([posts, md]) => {
+        console.log('[post] posts count:', posts.length, 'md length:', md.length)
         const post = posts.find(p => p.slug === slug)
         if (!post) throw new Error('文章元数据不存在')
 
@@ -107,10 +115,12 @@
         `
         document.getElementById('post').innerHTML = html
       }).catch(err => {
+        console.error('[post] error:', err)
         document.getElementById('post').innerHTML = `
           <div style="text-align:center;padding:8rem 2rem;">
             <h2>😅 文章不存在</h2>
             <p style="color:var(--text2);margin:1rem 0">${err.message}</p>
+            <p style="color:var(--text2);font-size:0.85rem">slug: ${slug}</p>
             <a href="index.html" class="btn btn-primary">返回首页</a>
           </div>
         `
