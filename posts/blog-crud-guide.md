@@ -49,10 +49,43 @@ cat posts.json | python3 -m json.tool  # 查看文章索引
 
 **本地预览**：
 
+因为是纯静态文件（HTML/CSS/JS），用任意 HTTP 服务器都能跑。
+
 ```bash
-python3 -m http.server 8080   # 或 npx serve .
-# 浏览器打开 http://localhost:8080
+# ===== 方式一：Node.js（推荐，你的技术栈） =====
+
+# npx serve — 最简洁，自动打开浏览器
+npx serve .
+
+# npx http-server — 功能更多，支持缓存控制、CORS 等
+npx http-server -p 8080 -o
+
+# npx live-server — 文件改动自动刷新浏览器
+npx live-server --port=8080
+
+# ===== 方式二：Python（零安装，系统自带） =====
+
+# Python 3
+python3 -m http.server 8080
+
+# Python 2（老系统）
+python -m SimpleHTTPServer 8080
+
+# ===== 方式三：PHP（装了 PHP 就能用） =====
+php -S localhost:8080
+
+# ===== 方式四：Ruby =====
+ruby -run -ehttpd . -p8080
+
+# ===== 方式五：VS Code 插件（开发体验最好） =====
+# 安装 "Live Server" 插件（ritwickdey.LiveServer）
+# 右键 index.html → "Open with Live Server"
+# 支持：自动刷新、热更新、CSS 注入
 ```
+
+启动后浏览器打开 `http://localhost:8080` 即可。
+
+**推荐**：日常开发用 VS Code + Live Server（改文件自动刷新），快速预览用 `npx serve .`。
 
 ### 增（Create）
 
