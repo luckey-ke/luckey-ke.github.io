@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>文章 — yueke</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="post.css">
+</head>
+<body>
+  <canvas id="physics-canvas"></canvas>
+
+  <nav class="nav" id="nav">
+    <div class="nav-inner">
+      <a href="index.html" class="logo">
+        <span class="logo-icon">⚡</span>
+        <span class="logo-text">yueke</span>
+      </a>
+      <div class="nav-links">
+        <a href="index.html#home" class="nav-link">首页</a>
+        <a href="index.html#blog" class="nav-link active">博客</a>
+        <a href="index.html#projects" class="nav-link">项目</a>
+        <a href="index.html#about" class="nav-link">关于</a>
+      </div>
+      <button class="theme-toggle" id="theme-toggle" aria-label="切换主题">
+        <span class="sun">☀️</span>
+        <span class="moon">🌙</span>
+      </button>
+    </div>
+  </nav>
+
+  <article class="post" id="post">
+    <!-- 内容由 JS 动态加载 -->
+    <div class="post-loading" id="post-loading">
+      <div class="loading-spinner"></div>
+      <p>加载中...</p>
+    </div>
+  </article>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-inner">
+        <p>© 2026 yueke · 用 ❤️ 和 ☕ 构建</p>
+        <div class="footer-links">
+          <a href="https://github.com/luckey-ke" target="_blank">GitHub</a>
+          <a href="mailto:EarthR6371393@163.com">Email</a>
+          <a href="index.html">← 返回首页</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="physics.js"></script>
+  <script src="main.js"></script>
+  <script src="markdown.js"></script>
+  <script>
+    // 从 URL 获取文章 slug，加载对应 md 文件并渲染
+    ;(function () {
+      const params = new URLSearchParams(window.location.search)
+      const slug = params.get('slug')
+      if (!slug) {
+        document.getElementById('post').innerHTML = '<p style="text-align:center;padding:8rem 2rem;">文章不存在，<a href="index.html">返回首页</a></p>'
+        return
+      }
+
+      // 加载文章元数据和内容
+      Promise.all([
+        fetch('posts.json').then(r => r.json()),
+        fetch('posts/' + slug + '.md').then(r => {
+          if (!r.ok) throw new Error('文章不存在')
+          return r.text()
+        })
+      ]).then(([posts, md]) => {
+        const post = posts.find(p => p.slug === slug)
+        if (!post) throw new Error('文章元数据不存在')
+
+        document.title = post.title + ' — yueke'
+
+        // 找到上一篇和下一篇
+        const idx = posts.findIndex(p => p.slug === slug)
+        const prev = idx > 0 ? posts[idx - 1] : null
+        const next = idx < posts.length - 1 ? posts[idx + 1] : null
+
+        const html = `
+          <header class="post-header">
+            <a href="index.html#blog" class="post-back">← 返回博客</a>
+            <div class="post-meta">
+              <span class="blog-tag" style="background:${post.tagColor}22;color:${post.tagColor}">${post.tag}</span>
+              <time>${post.date}</time>
+              <span>·</span>
+              <span>阅读约 ${post.readTime} 分钟</span>
+            </div>
+            <h1 class="post-title">${post.title}</h1>
+            <p class="post-subtitle">${post.excerpt}</p>
+          </header>
+          <div class="post-body">
+            ${renderMarkdown(md)}
+          </div>
+          <footer class="post-footer">
+            <div class="post-nav">
+              ${prev ? `<a href="post.html?slug=${prev.slug}" class="post-prev">← 上一篇：${prev.title}</a>` : '<span></span>'}
+              ${next ? `<a href="post.html?slug=${next.slug}" class="post-next">下一篇：${next.title} →</a>` : '<span></span>'}
+            </div>
+          </footer>
+        `
+        document.getElementById('post').innerHTML = html
+      }).catch(err => {
+        document.getElementById('post').innerHTML = `
+          <div style="text-align:center;padding:8rem 2rem;">
+            <h2>😅 文章不存在</h2>
+            <p style="color:var(--text2);margin:1rem 0">${err.message}</p>
+            <a href="index.html" class="btn btn-primary">返回首页</a>
+          </div>
+        `
+      })
+    })()
+  </script>
+</body>
+</html>
