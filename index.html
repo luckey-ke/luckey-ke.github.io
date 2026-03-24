@@ -87,41 +87,8 @@
         <h2 class="section-title">项目作品</h2>
         <p class="section-sub">一些搞过的东西</p>
       </div>
-      <div class="projects-grid">
-
-        <div class="project-card" data-physics="hover">
-          <div class="project-icon">🔬</div>
-          <h3>Physics.js</h3>
-          <p>轻量级 2D 物理引擎，支持刚体碰撞、弹簧和约束求解</p>
-          <div class="project-tags">
-            <span>JavaScript</span>
-            <span>Canvas</span>
-          </div>
-          <a href="#" class="project-link">查看项目 →</a>
-        </div>
-
-        <div class="project-card" data-physics="hover">
-          <div class="project-icon">🤖</div>
-          <h3>ChatFlow</h3>
-          <p>基于 LLM 的智能对话框架，支持 RAG 和工具调用</p>
-          <div class="project-tags">
-            <span>Python</span>
-            <span>LLM</span>
-          </div>
-          <a href="#" class="project-link">查看项目 →</a>
-        </div>
-
-        <div class="project-card" data-physics="hover">
-          <div class="project-icon">🎨</div>
-          <h3>Palette</h3>
-          <p>AI 驱动的配色方案生成器，一键导出设计 Token</p>
-          <div class="project-tags">
-            <span>TypeScript</span>
-            <span>AI</span>
-          </div>
-          <a href="#" class="project-link">查看项目 →</a>
-        </div>
-
+      <div class="projects-grid" id="projects-grid">
+        <!-- 由 JS 从 projects.json 动态加载 -->
       </div>
     </div>
   </section>
@@ -267,6 +234,24 @@
         .then(posts => {
           allPosts = posts
           renderPage(1)
+        })
+
+      // 从 projects.json 动态加载项目卡片
+      fetch('projects.json')
+        .then(r => r.json())
+        .then(projects => {
+          const grid = document.getElementById('projects-grid')
+          grid.innerHTML = projects.map(p => `
+            <div class="project-card" data-physics="hover">
+              <div class="project-icon">${p.icon}</div>
+              <h3>${p.title}</h3>
+              <p>${p.desc}</p>
+              <div class="project-tags">
+                ${p.tags.map(t => `<span>${t}</span>`).join('')}
+              </div>
+              <a href="${p.link || '#'}" class="project-link" ${p.link && p.link !== '#' ? 'target="_blank"' : ''}>查看项目 →</a>
+            </div>
+          `).join('')
         })
     })()
   </script>
