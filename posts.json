@@ -1,5 +1,14 @@
 [
   {
+    "slug": "blog-crud-guide",
+    "title": "博客文章增删改查完全指南",
+    "date": "2026-03-24",
+    "tag": "教程",
+    "tagColor": "#667eea",
+    "excerpt": "详解如何在这个纯静态博客中新增、修改、删除和查看文章，从本地操作到 git 推送全流程",
+    "readTime": 4
+  },
+  {
     "slug": "vue3-learning-guide",
     "title": "Vue 3 入门学习指南",
     "date": "2026-03-24",
