@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ Your Blog }}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Physics Canvas Background -->
+  <canvas id="physics-canvas"></canvas>
+
+  <!-- Navigation -->
+  <nav class="nav" id="nav">
+    <div class="nav-inner">
+      <a href="#" class="logo">
+        <span class="logo-icon">⚡</span>
+        <span class="logo-text">{{}}</span>
+      </a>
+      <div class="nav-links">
+        <a href="#home" class="nav-link active">首页</a>
+        <a href="#blog" class="nav-link">博客</a>
+        <a href="#projects" class="nav-link">项目</a>
+        <a href="#about" class="nav-link">关于</a>
+      </div>
+      <button class="theme-toggle" id="theme-toggle" aria-label="切换主题">
+        <span class="sun">☀️</span>
+        <span class="moon">🌙</span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <section class="hero" id="home">
+    <div class="hero-content">
+      <div class="hero-badge">👋 Hey there, welcome!</div>
+      <h1 class="hero-title">
+        <span class="line">我是 <span class="gradient-text">{{你的名字}}</span></span>
+        <span class="line typewriter" id="typewriter"></span><span class="cursor">|</span>
+      </h1>
+      <p class="hero-desc">
+        热爱技术、设计和一切有趣的事物。<br>
+        在这里记录思考、分享代码、探索未知。
+      </p>
+      <div class="hero-cta">
+        <a href="#blog" class="btn btn-primary">
+          <span>阅读博客</span>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </a>
+        <a href="https://github.com/{{username}}" class="btn btn-ghost" target="_blank">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+          <span>GitHub</span>
+        </a>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <div class="floating-cards" id="floating-cards">
+        <div class="float-card card-1">🚀</div>
+        <div class="float-card card-2">💻</div>
+        <div class="float-card card-3">🎨</div>
+        <div class="float-card card-4">⚡</div>
+        <div class="float-card card-5">🧪</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Blog Section -->
+  <section class="section" id="blog">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">最新文章</h2>
+        <p class="section-sub">记录技术路上的思考与探索</p>
+      </div>
+      <div class="blog-grid">
+
+        <article class="blog-card" data-physics="hover">
+          <div class="blog-card-image" style="background: linear-gradient(135deg, #667eea, #764ba2);">
+            <span class="blog-tag">前端</span>
+          </div>
+          <div class="blog-card-body">
+            <time class="blog-date">2026-03-24</time>
+            <h3 class="blog-title">用 Canvas 实现真实物理引擎</h3>
+            <p class="blog-excerpt">从零开始用 JavaScript 构建一个支持重力、弹性碰撞和摩擦力的 2D 物理引擎...</p>
+            <a href="#" class="blog-link">阅读全文 →</a>
+          </div>
+        </article>
+
+        <article class="blog-card" data-physics="hover">
+          <div class="blog-card-image" style="background: linear-gradient(135deg, #f093fb, #f5576c);">
+            <span class="blog-tag">设计</span>
+          </div>
+          <div class="blog-card-body">
+            <time class="blog-date">2026-03-20</time>
+            <h3 class="blog-title">2026 年的 UI 设计趋势</h3>
+            <p class="blog-excerpt">从 Glassmorphism 到 Bento Grid，探索今年最火的设计语言和实现方式...</p>
+            <a href="#" class="blog-link">阅读全文 →</a>
+          </div>
+        </article>
+
+        <article class="blog-card" data-physics="hover">
+          <div class="blog-card-image" style="background: linear-gradient(135deg, #4facfe, #00f2fe);">
+            <span class="blog-tag">AI</span>
+          </div>
+          <div class="blog-card-body">
+            <time class="blog-date">2026-03-15</time>
+            <h3 class="blog-title">本地部署大模型的完整指南</h3>
+            <p class="blog-excerpt">如何在自己的机器上跑起 70B 参数的模型，从量化到推理优化...</p>
+            <a href="#" class="blog-link">阅读全文 →</a>
+          </div>
+        </article>
+
+        <article class="blog-card" data-physics="hover">
+          <div class="blog-card-image" style="background: linear-gradient(135deg, #43e97b, #38f9d7);">
+            <span class="blog-tag">工具</span>
+          </div>
+          <div class="blog-card-body">
+            <time class="blog-date">2026-03-10</time>
+            <h3 class="blog-title">我的终端美化方案</h3>
+            <p class="blog-excerpt">从 Starship 到 Tmux，一套让终端赏心悦目的配置方案...</p>
+            <a href="#" class="blog-link">阅读全文 →</a>
+          </div>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Projects Section -->
+  <section class="section section-alt" id="projects">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">项目作品</h2>
+        <p class="section-sub">一些搞过的东西</p>
+      </div>
+      <div class="projects-grid">
+
+        <div class="project-card" data-physics="hover">
+          <div class="project-icon">🔬</div>
+          <h3>Physics.js</h3>
+          <p>轻量级 2D 物理引擎，支持刚体碰撞、弹簧和约束求解</p>
+          <div class="project-tags">
+            <span>JavaScript</span>
+            <span>Canvas</span>
+          </div>
+          <a href="#" class="project-link">查看项目 →</a>
+        </div>
+
+        <div class="project-card" data-physics="hover">
+          <div class="project-icon">🤖</div>
+          <h3>ChatFlow</h3>
+          <p>基于 LLM 的智能对话框架，支持 RAG 和工具调用</p>
+          <div class="project-tags">
+            <span>Python</span>
+            <span>LLM</span>
+          </div>
+          <a href="#" class="project-link">查看项目 →</a>
+        </div>
+
+        <div class="project-card" data-physics="hover">
+          <div class="project-icon">🎨</div>
+          <h3>Palette</h3>
+          <p>AI 驱动的配色方案生成器，一键导出设计 Token</p>
+          <div class="project-tags">
+            <span>TypeScript</span>
+            <span>AI</span>
+          </div>
+          <a href="#" class="project-link">查看项目 →</a>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- About Section -->
+  <section class="section" id="about">
+    <div class="container">
+      <div class="about-grid">
+        <div class="about-text">
+          <h2 class="section-title">关于我</h2>
+          <p>一个对技术充满好奇心的人。喜欢折腾各种东西，从底层系统到上层应用，从代码到设计。</p>
+          <p>相信好的工具能让创造力爆发，好的设计能让复杂变简单。</p>
+          <div class="about-skills">
+            <span class="skill-tag">JavaScript</span>
+            <span class="skill-tag">TypeScript</span>
+            <span class="skill-tag">Python</span>
+            <span class="skill-tag">Rust</span>
+            <span class="skill-tag">React</span>
+            <span class="skill-tag">Node.js</span>
+            <span class="skill-tag">Canvas/WebGL</span>
+            <span class="skill-tag">Linux</span>
+          </div>
+        </div>
+        <div class="about-visual">
+          <div class="about-avatar" id="about-avatar">
+            <div class="avatar-ring"></div>
+            <div class="avatar-inner">🧑‍💻</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-inner">
+        <p>© 2026 {{你的名字}} · 用 ❤️ 和 ☕ 构建</p>
+        <div class="footer-links">
+          <a href="https://github.com/{{username}}" target="_blank">GitHub</a>
+          <a href="mailto:{{email}}">Email</a>
+          <a href="#home">回到顶部 ↑</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="physics.js"></script>
+  <script src="main.js"></script>
+</body>
+</html>
