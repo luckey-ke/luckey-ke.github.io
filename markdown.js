@@ -3,7 +3,8 @@
  * 支持：标题、段落、加粗、代码块、行内代码、列表、表格、引用、分割线、链接
  */
 function renderMarkdown(md) {
-  let html = md
+  // 去掉 YAML front matter (--- ... ---)
+  let html = md.replace(/^---\s*\n[\s\S]*?\n---\s*\n?/, '')
 
   // 代码块 ```lang ... ```
   html = html.replace(/```(\w*)\n([\s\S]*?)```/g, (_, lang, code) => {
