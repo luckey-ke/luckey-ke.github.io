@@ -1,5 +1,50 @@
 [
   {
+    "slug": "vue3-learning-guide",
+    "title": "Vue 3 入门学习指南",
+    "date": "2026-03-24",
+    "tag": "前端",
+    "tagColor": "#42b883",
+    "excerpt": "从零开始学习 Vue 3，项目搭建、响应式数据、组件通信、路由、状态管理一站式入门",
+    "readTime": 5
+  },
+  {
+    "slug": "vue3-syntax",
+    "title": "Vue 3 语法速查手册",
+    "date": "2026-03-24",
+    "tag": "前端",
+    "tagColor": "#42b883",
+    "excerpt": "Composition API、响应式、指令、组件通信、路由、Pinia、Teleport 全覆盖",
+    "readTime": 6
+  },
+  {
+    "slug": "thread-pool-guide",
+    "title": "Java 线程池完全指南",
+    "date": "2026-03-24",
+    "tag": "Java",
+    "tagColor": "#f89820",
+    "excerpt": "从 ThreadPoolExecutor 到 ForkJoinPool 和 CompletableFuture，覆盖所有线程池使用方式",
+    "readTime": 7
+  },
+  {
+    "slug": "java8-syntactic-sugar",
+    "title": "Java 8 语法糖详解",
+    "date": "2026-03-24",
+    "tag": "Java",
+    "tagColor": "#f89820",
+    "excerpt": "Lambda、Stream、Optional、方法引用、新日期 API，Java 8 最全语法特性整理",
+    "readTime": 5
+  },
+  {
+    "slug": "git-cheatsheet",
+    "title": "Git 常用命令速查表",
+    "date": "2026-03-24",
+    "tag": "工具",
+    "tagColor": "#43e97b",
+    "excerpt": "日常开发必备 Git 命令汇总，从基础操作到分支管理、撤销回退、标签管理",
+    "readTime": 4
+  },
+  {
     "slug": "physics-engine",
     "title": "用 Canvas 实现真实物理引擎",
     "date": "2026-03-24",
