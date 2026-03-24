@@ -2,59 +2,68 @@
 
 ## 本地预览
 
-直接用浏览器打开 `index.html` 即可，纯静态无需构建。
-
 ```bash
-# 或者用 Python 起个本地服务器
-cd blog
+# 起个本地服务器
 python3 -m http.server 8080
 # 访问 http://localhost:8080
 ```
 
-## GitHub Pages 部署
+## 写文章流程
 
-### 方法一：用户站点（推荐）
+### 1. 在 `posts/` 下创建 `.md` 文件
 
-1. 创建仓库，名称为 `你的用户名.github.io`
-2. 把 `blog/` 目录下的所有文件推送到仓库根目录
-3. 进入仓库 Settings → Pages → Source 选择 `main` 分支
-4. 等待几分钟，访问 `https://你的用户名.github.io`
+文件名即 slug（URL 路径），用英文短横线命名，例如：`my-first-post.md`。
 
-### 方法二：项目站点
+### 2. 文件开头写 YAML front matter
 
-1. 在任意仓库中创建 `docs/` 目录，把文件放进去
-2. Settings → Pages → Source 选择 `main` 分支 + `/docs` 目录
-3. 访问 `https://你的用户名.github.io/仓库名`
+```markdown
+---
+title: "文章标题"
+date: "2026-03-24"
+tag: "分类标签"
+tagColor: "#667eea"
+excerpt: "文章摘要，会显示在首页卡片上"
+---
+
+正文内容从这里开始...
+```
+
+**必填字段：** `title`、`date`
+**可选字段：** `tag`（默认"未分类"）、`tagColor`、`excerpt`、`readTime`（不填会自动估算）
+
+### 3. 运行构建脚本
+
+```bash
+node build.js
+```
+
+自动扫描 `posts/` 目录，读取每篇文章的 front matter，生成 `posts.json`。
+
+### 4. 提交并推送
+
+```bash
+git add -A && git commit -m "add new post" && git push
+```
+
+## 文件结构
+
+```
+├── index.html      # 主页面（含分页）
+├── post.html       # 文章详情页
+├── style.css       # 样式（暗色/亮色主题）
+├── post.css        # 文章页样式
+├── physics.js      # 2D 物理引擎 + 粒子系统
+├── main.js         # 交互逻辑
+├── markdown.js     # Markdown 渲染器
+├── build.js        # 🔧 自动生成 posts.json 的脚本
+├── posts.json      # 文章索引（由 build.js 自动生成，不要手动编辑）
+├── posts/          # 📝 文章目录
+│   ├── xxx.md
+│   └── yyy.md
+└── README.md       # 本文件
+```
 
 ## 自定义
-
-### 必须修改的地方
-
-打开 `index.html`，搜索 `{{` 替换以下内容：
-
-| 占位符 | 替换为 |
-|--------|--------|
-| `{{你的名字}}` | 你的名字/昵称 |
-| `{{username}}` | GitHub 用户名 |
-| `{{email}}` | 你的邮箱 |
-
-### 添加博客文章
-
-在 `index.html` 的 `.blog-grid` 中复制 `.blog-card` 模板：
-
-```html
-<article class="blog-card" data-physics="hover">
-  <div class="blog-card-image" style="background: linear-gradient(135deg, #颜色1, #颜色2);">
-    <span class="blog-tag">标签</span>
-  </div>
-  <div class="blog-card-body">
-    <time class="blog-date">2026-03-24</time>
-    <h3 class="blog-title">文章标题</h3>
-    <p class="blog-excerpt">文章摘要...</p>
-    <a href="post-url" class="blog-link">阅读全文 →</a>
-  </div>
-</article>
-```
 
 ### 修改打字机文字
 
@@ -64,7 +73,6 @@ python3 -m http.server 8080
 const roles = [
   '你的身份 1',
   '你的身份 2',
-  // ...
 ]
 ```
 
@@ -83,15 +91,12 @@ const CFG = {
 }
 ```
 
-## 文件结构
+### 调整分页数量
 
-```
-blog/
-├── index.html    # 主页面
-├── style.css     # 样式（暗色/亮色主题）
-├── physics.js    # 2D 物理引擎 + 粒子系统
-├── main.js       # 交互逻辑
-└── README.md     # 本文件
+在 `index.html` 的 `<script>` 中修改 `PER_PAGE`：
+
+```js
+const PER_PAGE = 6  // 每页显示几篇文章
 ```
 
 ## 特性
@@ -102,5 +107,7 @@ blog/
 - ✨ 打字机效果
 - 🎭 卡片 3D 倾斜悬停效果
 - 🔮 滚动渐显动画
-- 🌟 鼠标交互粒子系统（点击空白处生成粒子）
-- 🚀 纯静态，零依赖，秒开
+- 🌟 鼠标交互粒子系统
+- 📄 Markdown 自动渲染
+- 📖 分页功能
+- 🔧 自动构建（node build.js）

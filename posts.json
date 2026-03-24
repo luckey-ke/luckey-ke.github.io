@@ -6,7 +6,7 @@
     "tag": "前端",
     "tagColor": "#667eea",
     "excerpt": "从零开始用 JavaScript 构建一个支持重力、弹性碰撞和摩擦力的 2D 物理引擎",
-    "readTime": 8
+    "readTime": 3
   },
   {
     "slug": "ui-design-trends",
@@ -15,7 +15,7 @@
     "tag": "设计",
     "tagColor": "#f093fb",
     "excerpt": "从 Glassmorphism 到 Bento Grid，探索今年最火的设计语言和实现方式",
-    "readTime": 6
+    "readTime": 3
   },
   {
     "slug": "local-llm-guide",
@@ -24,7 +24,7 @@
     "tag": "AI",
     "tagColor": "#4facfe",
     "excerpt": "如何在自己的机器上跑起大参数模型，从量化到推理优化",
-    "readTime": 10
+    "readTime": 2
   },
   {
     "slug": "terminal-beautify",
@@ -33,6 +33,6 @@
     "tag": "工具",
     "tagColor": "#43e97b",
     "excerpt": "从 Starship 到 Tmux，一套让终端赏心悦目的配置方案",
-    "readTime": 7
+    "readTime": 2
   }
 ]
