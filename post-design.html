@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>2026 年的 UI 设计趋势 — yueke</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="post.css">
+</head>
+<body>
+  <canvas id="physics-canvas"></canvas>
+  <nav class="nav" id="nav">
+    <div class="nav-inner">
+      <a href="index.html" class="logo">
+        <span class="logo-icon">⚡</span>
+        <span class="logo-text">yueke</span>
+      </a>
+      <div class="nav-links">
+        <a href="index.html#home" class="nav-link">首页</a>
+        <a href="index.html#blog" class="nav-link active">博客</a>
+        <a href="index.html#projects" class="nav-link">项目</a>
+        <a href="index.html#about" class="nav-link">关于</a>
+      </div>
+      <button class="theme-toggle" id="theme-toggle" aria-label="切换主题">
+        <span class="sun">☀️</span>
+        <span class="moon">🌙</span>
+      </button>
+    </div>
+  </nav>
+
+  <article class="post">
+    <header class="post-header">
+      <a href="index.html#blog" class="post-back">← 返回博客</a>
+      <div class="post-meta">
+        <span class="blog-tag">设计</span>
+        <time>2026-03-20</time>
+        <span>·</span>
+        <span>阅读约 6 分钟</span>
+      </div>
+      <h1 class="post-title">2026 年的 UI 设计趋势</h1>
+      <p class="post-subtitle">从 Glassmorphism 到 Bento Grid，探索今年最火的设计语言和实现方式</p>
+    </header>
+
+    <div class="post-body">
+      <h2>🔮 设计趋势总览</h2>
+      <p>2026 年的 UI 设计在经历了极简主义的洗礼后，开始追求<strong>质感与层次的回归</strong>。设计师们不再满足于纯平面，而是通过玻璃、光影、微动效来创造更有沉浸感的体验。</p>
+
+      <h2>1. 🪟 Glassmorphism 2.0</h2>
+      <p>Glassmorphism 从 2020 年开始流行，但今年它进化了。不再只是简单的毛玻璃背景，而是结合了：</p>
+      <ul>
+        <li><strong>动态模糊</strong>：根据滚动深度调整 blur 值</li>
+        <li><strong>彩色玻璃</strong>：玻璃面板带有渐变色边缘光</li>
+        <li><strong>多层叠加</strong>：不同透明度的玻璃层叠在一起</li>
+      </ul>
+      <pre><code class="language-css">/* Glassmorphism 2.0 */
+.glass-card {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(20px) saturate(1.4);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
+  box-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+/* 彩色边缘光 */
+.glass-card::before {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  background: linear-gradient(135deg,
+    rgba(124, 92, 252, 0.3),
+    rgba(244, 114, 182, 0.3));
+  z-index: -1;
+  filter: blur(1px);
+}</code></pre>
+
+      <h2>2. 📦 Bento Grid 布局</h2>
+      <p>灵感来自 Apple 的产品页面和日式便当盒（Bento Box）。用不规则的网格卡片来展示信息，打破传统列表的单调感。</p>
+      <pre><code class="language-css">/* Bento Grid */
+.bento-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: repeat(3, 200px);
+  gap: 16px;
+}
+
+.bento-item.featured {
+  grid-column: span 2;
+  grid-row: span 2;
+}
+
+.bento-item.tall {
+  grid-row: span 2;
+}
+
+.bento-item.wide {
+  grid-column: span 2;
+}</code></pre>
+      <p>关键在于<strong>信息层级</strong>：大的卡片放最重要的内容，小的卡片放辅助信息。不要平均分配空间。</p>
+
+      <h2>3. 🌈 渐变复兴</h2>
+      <p>渐变回来了，但不再是 2018 年那种夸张的全屏彩虹渐变。今年的趋势是：</p>
+      <ul>
+        <li><strong>微妙渐变</strong>：同色系的浅到深，如 <code>#7c5cfc → #a78bfa</code></li>
+        <li><strong>Mesh Gradient</strong>：多中心点的网状渐变，更自然柔和</li>
+        <li><strong>渐变文字</strong>：用 <code>background-clip: text</code> 让文字本身变成渐变</li>
+      </ul>
+      <pre><code class="language-css">/* 渐变文字 */
+.gradient-text {
+  background: linear-gradient(135deg, #7c5cfc, #c084fc, #f472b6);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}</code></pre>
+
+      <h2>4. ✨ 微交互与物理动效</h2>
+      <p>静态的 UI 已经不够了。用户期待每一次交互都有反馈：</p>
+      <ul>
+        <li><strong>弹性动画</strong>：使用 <code>cubic-bezier</code> 模拟弹簧效果</li>
+        <li><strong>视差滚动</strong>：不同层级以不同速度移动</li>
+        <li><strong>3D 倾斜</strong>：卡片跟随鼠标产生透视变换</li>
+        <li><strong>粒子效果</strong>：背景粒子增加空间感</li>
+      </ul>
+      <pre><code class="language-javascript">// 卡片 3D 倾斜效果
+card.addEventListener('mousemove', (e) => {
+  const rect = card.getBoundingClientRect();
+  const x = e.clientX - rect.left;
+  const y = e.clientY - rect.top;
+  const rotateX = (y - rect.height / 2) / 20;
+  const rotateY = (rect.width / 2 - x) / 20;
+  card.style.transform =
+    `perspective(800px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+});</code></pre>
+
+      <h2>5. 🌙 暗色模式的精细化</h2>
+      <p>暗色模式不再是简单的"把白色换成黑色"。2026 年的做法：</p>
+      <ul>
+        <li>使用<strong>多层级灰色</strong>而非纯黑：<code>#0a0a0b</code>, <code>#111113</code>, <code>#1a1a1e</code></li>
+        <li>彩色在暗色背景上要<strong>降低饱和度</strong>，避免刺眼</li>
+        <li>阴影在暗色模式下用<strong>更柔和的发光</strong>替代</li>
+        <li>文字对比度要符合 WCAG AA 标准（至少 4.5:1）</li>
+      </ul>
+
+      <h2>6. 📱 响应式的新思维</h2>
+      <p>2026 年的响应式不再只是"手机适配"，而是要考虑：</p>
+      <ul>
+        <li><strong>折叠屏</strong>：Galaxy Fold, Pixel Fold 的铰链区域</li>
+        <li><strong>超宽屏</strong>：21:9 甚至 32:9 的显示器</li>
+        <li><strong>可变字体</strong>：根据屏幕大小自动调整字重和字宽</li>
+      </ul>
+
+      <h2>📊 趋势总结</h2>
+      <table>
+        <thead>
+          <tr><th>趋势</th><th>热度</th><th>实现难度</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Glassmorphism 2.0</td><td>🔥🔥🔥🔥🔥</td><td>⭐⭐</td></tr>
+          <tr><td>Bento Grid</td><td>🔥🔥🔥🔥</td><td>⭐</td></tr>
+          <tr><td>渐变复兴</td><td>🔥🔥🔥🔥</td><td>⭐</td></tr>
+          <tr><td>物理动效</td><td>🔥🔥🔥</td><td>⭐⭐⭐</td></tr>
+          <tr><td>暗色精细化</td><td>🔥🔥🔥🔥🔥</td><td>⭐⭐</td></tr>
+        </tbody>
+      </table>
+
+      <h2>🎯 我的建议</h2>
+      <p>不要盲目追趋势。选择和你的产品调性匹配的设计语言，然后<strong>一致性地执行</strong>。混搭太多风格只会让界面变得混乱。</p>
+      <p>这个博客就融合了 Glassmorphism + 渐变 + 物理动效 + 暗色精细化，所有元素服务于同一个设计语言，所以看起来和谐统一。</p>
+
+      <div class="post-tip">
+        <strong>💡 实战建议：</strong>如果你在纠结用什么风格，先去 <a href="https://dribbble.com" target="_blank">Dribbble</a> 和 <a href="https://mobbin.com" target="_blank">Mobbin</a> 收集 20-30 个你觉得好看的设计截图，然后找它们的共同点。那就是适合你的趋势。
+      </div>
+    </div>
+
+    <footer class="post-footer">
+      <div class="post-nav">
+        <a href="post-physics.html" class="post-prev">← 上一篇：用 Canvas 实现真实物理引擎</a>
+        <a href="post-llm.html" class="post-next">下一篇：本地部署大模型的完整指南 →</a>
+      </div>
+    </footer>
+  </article>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-inner">
+        <p>© 2026 yueke · 用 ❤️ 和 ☕ 构建</p>
+        <div class="footer-links">
+          <a href="https://github.com/luckey-ke" target="_blank">GitHub</a>
+          <a href="mailto:EarthR6371393@163.com">Email</a>
+          <a href="index.html">← 返回首页</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="physics.js"></script>
+  <script src="main.js"></script>
+</body>
+</html>
